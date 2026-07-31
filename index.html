@@ -3,165 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium Clubs — 7th Grade Boy (Pick: VEX Team 1&2)</title>
+<title>Interactive Premium Clubs Planner — 7th Grade Boy</title>
 <style>
   :root{
-    --pick:#d97706;     /* gold — pick */
-    --conflict:#dc2626; /* red */
-    --clear:#059669;    /* green */
+    --sel:#d97706;      /* gold — selected */
     --grid:#e5e7eb;
     --ink:#1f2937;
+    --disabled:#e5e7eb;
   }
   *{box-sizing:border-box;}
   body{
     font-family:-apple-system,"SF Pro Text",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-    margin:0;padding:28px;background:#f8fafc;color:var(--ink);
+    margin:0;padding:24px;background:#f8fafc;color:var(--ink);
   }
   h1{font-size:22px;margin:0 0 4px;}
   .sub{color:#6b7280;font-size:13px;margin-bottom:14px;}
-  .banner{
-    background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;
-    border-radius:10px;padding:11px 14px;font-size:13px;margin-bottom:18px;line-height:1.5;
+  .bar{
+    display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+    background:#fff;border:1px solid var(--grid);border-radius:12px;
+    padding:12px 16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.05);
+    position:sticky;top:0;z-index:5;
   }
-  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:20px;font-size:13px;}
-  .legend span{display:inline-flex;align-items:center;gap:7px;}
-  .swatch{width:14px;height:14px;border-radius:3px;display:inline-block;}
+  .bar .total{font-size:15px;font-weight:700;}
+  .bar .total span{color:var(--sel);}
+  .bar .picks{font-size:12px;color:#6b7280;flex:1;min-width:200px;}
+  .bar button{
+    font:inherit;font-size:12px;border:1px solid var(--grid);background:#f9fafb;
+    padding:6px 12px;border-radius:8px;cursor:pointer;color:var(--ink);
+  }
+  .bar button:hover{background:#f3f4f6;}
+  .hint{font-size:12px;color:#9ca3af;margin-bottom:12px;}
   .cal{
-    display:grid;
-    grid-template-columns:70px repeat(5,1fr);
+    display:grid;grid-template-columns:64px repeat(5,1fr);
     border:1px solid var(--grid);border-radius:12px;overflow:hidden;
     background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.05);
   }
-  .hdr{
-    background:#111827;color:#fff;font-weight:600;font-size:13px;
-    padding:12px 8px;text-align:center;
-  }
-  .timecol{
-    background:#f9fafb;border-top:1px solid var(--grid);
-    font-size:11px;color:#9ca3af;padding:6px;text-align:right;
-  }
-  .cell{
-    border-top:1px solid var(--grid);border-left:1px solid var(--grid);
-    min-height:58px;padding:4px;position:relative;
-  }
+  .hdr{background:#111827;color:#fff;font-weight:600;font-size:13px;padding:12px 8px;text-align:center;}
+  .timecol{background:#f9fafb;border-top:1px solid var(--grid);font-size:11px;color:#9ca3af;padding:6px;text-align:right;}
+  .cell{border-top:1px solid var(--grid);border-left:1px solid var(--grid);min-height:56px;padding:4px;}
   .evt{
-    border-radius:7px;padding:5px 7px;margin-bottom:4px;color:#fff;
-    font-size:11.5px;line-height:1.25;
+    border-radius:7px;padding:5px 7px;margin-bottom:4px;font-size:11.5px;line-height:1.28;
+    cursor:pointer;border:1px solid transparent;background:#eef2ff;color:#3730a3;
+    transition:all .12s ease;user-select:none;position:relative;
   }
+  .evt:hover{filter:brightness(.97);transform:translateY(-1px);}
   .evt b{display:block;font-size:11.5px;}
-  .evt small{font-size:10px;opacity:.92;}
+  .evt small{font-size:10px;display:block;opacity:.85;}
   .evt .cost{font-weight:700;opacity:1;}
-  .pick{background:var(--pick);box-shadow:0 0 0 2px #fef3c7;}
-  .conflict{background:var(--conflict);}
-  .clear{background:var(--clear);}
-  .tag{
-    position:absolute;top:2px;right:4px;font-size:9px;font-weight:700;
-    background:rgba(255,255,255,.28);padding:1px 5px;border-radius:8px;z-index:2;
-  }
-  .note{font-size:12px;color:#6b7280;margin-top:18px;line-height:1.6;}
+  /* states */
+  .evt.selected{background:var(--sel);color:#fff;box-shadow:0 0 0 2px #fef3c7;border-color:var(--sel);}
+  .evt.disabled{background:var(--disabled)!important;color:#9ca3af!important;cursor:not-allowed;filter:grayscale(1);opacity:.6;box-shadow:none;border-color:transparent;}
+  .evt.disabled:hover{transform:none;}
+  .evt .why{position:absolute;top:2px;right:4px;font-size:9px;font-weight:700;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:8px;display:none;}
+  .evt.disabled .why{display:inline;}
+  .note{font-size:12px;color:#6b7280;margin-top:16px;line-height:1.6;}
   .note b{color:var(--ink);}
 </style>
 </head>
 <body>
-  <h1>Premium Clubs — 7th Grade Boy</h1>
-  <div class="sub">Weekly view · Pick: <b>VEX Robotics — Team 1&amp;2 (Tuesday)</b> · Stratford Prep Blackford 2026–27 · costs shown per club</div>
+  <h1>Interactive Premium Clubs Planner</h1>
+  <div class="sub">7th-grade boy · Stratford Prep Blackford 2026–27 · <b>click a club to select</b> — conflicting times gray out automatically</div>
 
-  <div class="banner">
-    ✅ <b>VEX Team 1&amp;2 only touches Tuesday 4:00–6:00 PM.</b> Everything Mon / Wed / Thu / Fri is <b>free to add</b> — including Model UN and Speech &amp; Debate. Only the four Tuesday clubs conflict.
+  <div class="bar">
+    <div class="total">Total: <span id="total">$0</span></div>
+    <div class="picks" id="picks">No clubs selected yet — tap any club to start.</div>
+    <button onclick="clearAll()">Clear all</button>
   </div>
+  <div class="hint">💡 Selected = gold. Grayed-out = overlaps something you picked. Click a selected club again to remove it.</div>
 
-  <div class="legend">
-    <span><i class="swatch pick"></i> Your pick (VEX Team 1&amp;2)</span>
-    <span><i class="swatch conflict"></i> Conflicts with pick</span>
-    <span><i class="swatch clear"></i> No conflict — free to add</span>
-  </div>
-
-  <div class="cal">
+  <div class="cal" id="cal">
     <div class="hdr">Time</div>
-    <div class="hdr">Monday</div>
-    <div class="hdr">Tuesday</div>
-    <div class="hdr">Wednesday</div>
-    <div class="hdr">Thursday</div>
-    <div class="hdr">Friday</div>
+    <div class="hdr">Monday</div><div class="hdr">Tuesday</div><div class="hdr">Wednesday</div>
+    <div class="hdr">Thursday</div><div class="hdr">Friday</div>
 
-    <!-- ROW: 3:45 - 5:00 -->
+    <!-- Row 3:45–5:00 -->
     <div class="timecol">3:45<br>–5:00</div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <!-- Thursday -->
-    <div class="cell">
-      <div class="evt clear"><b>VEX Robotics (Team 3&4)</b><small>3:45–5:45 · 7–8th</small><small class="cost">$1,300 +$350 vol.</small></div>
-      <div class="evt clear"><b>AI Club</b><small>3:45–4:45 · Trimester</small><small class="cost">$600 / trimester</small></div>
-      <div class="evt clear"><b>American Sign Language</b><small>3:45–4:45</small><small class="cost">$325</small></div>
-      <div class="evt clear"><b>Creative Writing</b><small>3:45–4:45 · Trimester</small><small class="cost">$500 / trimester</small></div>
-      <div class="evt clear"><b>Prompt Engineering</b><small>3:45–4:45</small><small class="cost">$1,800</small></div>
-    </div>
-    <!-- Friday -->
-    <div class="cell">
-      <div class="evt clear"><b>Builders Club</b><small>3:45–4:45</small><small class="cost">$175</small></div>
-      <div class="evt clear"><b>Chess Club</b><small>3:45–4:45</small><small class="cost">$325</small></div>
-      <div class="evt clear"><b>Cybersecurity Club</b><small>3:45–4:45</small><small class="cost">$1,800</small></div>
-      <div class="evt clear"><b>Data Science Club</b><small>3:45–4:45</small><small class="cost">$325</small></div>
-      <div class="evt clear"><b>Programming Invention</b><small>3:45–4:45</small><small class="cost">$1,800</small></div>
-      <div class="evt clear"><b>Drama Club</b><small>3:45–5:00 (+Wed)</small><small class="cost">$200</small></div>
-    </div>
+    <div class="cell" data-day="Mon"></div>
+    <div class="cell" data-day="Tue"></div>
+    <div class="cell" data-day="Wed"></div>
+    <div class="cell" data-day="Thu" id="thu-early"></div>
+    <div class="cell" data-day="Fri" id="fri-early"></div>
 
-    <!-- ROW: 4:00 - 5:00 -->
+    <!-- Row 4:00–5:00 -->
     <div class="timecol">4:00<br>–5:00</div>
-    <!-- Monday -->
-    <div class="cell">
-      <div class="evt clear"><b>Model United Nations</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small><small class="cost">$2,500</small></div>
-      <div class="evt clear"><b>Speech &amp; Debate</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small><small class="cost">$1,500 +$350 vol.</small></div>
-      <div class="evt clear"><b>Band</b><small>4:00–5:00</small><small class="cost">$325</small></div>
-      <div class="evt clear"><b>Board Game Design</b><small>4:00–5:00</small><small class="cost">$325</small></div>
-      <div class="evt clear"><b>Improv Club</b><small>4:00–5:00 · Trimester</small><small class="cost">$500 / trimester</small></div>
-      <div class="evt clear"><b>Intro to Animation</b><small>4:00–5:00</small><small class="cost">$325</small></div>
-    </div>
-    <!-- Tuesday -->
-    <div class="cell">
-      <div class="evt pick"><span class="tag">PICK</span><b>VEX Robotics (Team 1&2)</b><small>4:00–6:00 · 7–8th</small><small class="cost">$1,300 +$350 vol.</small></div>
-      <div class="evt conflict"><b>Creative Pages</b><small>4:00–5:00</small><small class="cost">$325</small></div>
-      <div class="evt conflict"><b>Drone Engineers</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
-      <div class="evt conflict"><b>Finance &amp; Investment</b><small>4:00–5:30</small><small class="cost">$500</small></div>
-      <div class="evt conflict"><b>YouTube Celebrity</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
-    </div>
-    <!-- Wednesday -->
-    <div class="cell">
-      <div class="evt clear"><b>Model UN</b><small>4:00–5:00 (Wed portion)</small><small class="cost">incl. above</small></div>
-      <div class="evt clear"><b>Speech &amp; Debate</b><small>4:00–5:00 (Wed portion)</small><small class="cost">incl. above</small></div>
-      <div class="evt clear"><b>Aerospace &amp; Rocketry</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
-      <div class="evt clear"><b>Drama Club</b><small>4:00–5:30 (+Fri)</small><small class="cost">$200</small></div>
-      <div class="evt clear"><b>Entrepreneur Club</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
-      <div class="evt clear"><b>Visual Arts Club</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
-    </div>
+    <div class="cell" id="mon-mid"></div>
+    <div class="cell" id="tue-mid"></div>
+    <div class="cell" id="wed-mid"></div>
     <div class="cell"></div>
     <div class="cell"></div>
 
-    <!-- ROW: 5:00 - 6:00 -->
+    <!-- Row 5:00–6:00 -->
     <div class="timecol">5:00<br>–6:00</div>
-    <!-- Monday -->
-    <div class="cell">
-      <div class="evt clear"><b>Model UN (cont.)</b><small>runs to 6:00</small></div>
-      <div class="evt clear"><b>Speech &amp; Debate (cont.)</b><small>runs to 6:00</small></div>
-      <div class="evt clear"><b>HOSA</b><small>Mon 4–6 &amp; Wed 4–5</small><small class="cost">$2,500</small></div>
-      <div class="evt clear"><b>Science Olympiad</b><small>Mon 4–6 &amp; Wed 4–5</small><small class="cost">$2,500 +$350 vol.</small></div>
-    </div>
-    <!-- Tuesday -->
-    <div class="cell">
-      <div class="evt pick"><b>VEX (cont.)</b><small>runs to 6:00</small></div>
-    </div>
+    <div class="cell" id="mon-late"></div>
+    <div class="cell" id="tue-late"></div>
     <div class="cell"></div>
     <div class="cell"></div>
     <div class="cell"></div>
   </div>
 
   <div class="note">
-    <b>How to read this:</b> Your single pick (<span style="color:var(--pick)"><b>gold</b></span>) is VEX Robotics Team 1&amp;2, Tuesday 4:00–6:00 PM. Red = overlaps it. Green = free to add on any other day.<br><br>
-    <b>Only 4 conflicts (all Tuesday):</b> Creative Pages ($325), Drone Engineers ($1,800), Finance &amp; Investment ($500), YouTube Celebrity ($1,800).<br>
-    <b>Everything else is open</b> — Model UN ($2,500) and Speech &amp; Debate ($1,500) now fit freely on Mon/Wed since you dropped them as picks. Note MUN and S&amp;D still share each other's slot, so you could add <b>one</b> of those two.<br><br>
-    <b>Your pick cost:</b> VEX Robotics <b>$1,300</b> (+$350 parent-volunteer fee if you can't volunteer). 7th–8th grade only — fine for 7th. Parent volunteering required.<br>
-    <b>Excluded:</b> Girls Technovation Club (girls only).
+    <b>Notes:</b> VEX has two teams — you'd join one (Tue <i>or</i> Thu). MUN &amp; Speech &amp; Debate share the same Mon 4–6 + Wed 4–5 slot (with HOSA &amp; Science Olympiad), so picking one grays the others. Girls Technovation excluded (girls only). Costs shown are the base club fee; "+vol" = additional $350 parent-volunteer fee if you can't volunteer.
   </div>
+
+<script>
+// each club: id, name, cost label, and meeting slots [day, startMin, endMin]
+const M = (h,m)=>h*60+m;
+const CLUBS = [
+  // Thursday early row
+  {name:"VEX Robotics (Team 3&4)", cost:"$1,300 +vol", cell:"thu-early", slots:[["Thu",M(15,45),M(17,45)]]},
+  {name:"AI Club", cost:"$600/tri", cell:"thu-early", slots:[["Thu",M(15,45),M(16,45)]]},
+  {name:"American Sign Language", cost:"$325", cell:"thu-early", slots:[["Thu",M(15,45),M(16,45)]]},
+  {name:"Creative Writing", cost:"$500/tri", cell:"thu-early", slots:[["Thu",M(15,45),M(16,45)]]},
+  {name:"Prompt Engineering", cost:"$1,800", cell:"thu-early", slots:[["Thu",M(15,45),M(16,45)]]},
+  // Friday early row
+  {name:"Builders Club", cost:"$175", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
+  {name:"Chess Club", cost:"$325", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
+  {name:"Cybersecurity Club", cost:"$1,800", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
+  {name:"Data Science Club", cost:"$325", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
+  {name:"Programming Invention", cost:"$1,800", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
+  {name:"Drama Club", cost:"$200", cell:"fri-early", slots:[["Fri",M(15,45),M(17,0)],["Wed",M(16,0),M(17,30)]]},
+  // Monday mid
+  {name:"Model United Nations", cost:"$2,500", cell:"mon-mid", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"Speech & Debate", cost:"$1,500 +vol", cell:"mon-mid", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"Band", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
+  {name:"Board Game Design", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
+  {name:"Improv Club", cost:"$500/tri", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
+  {name:"Intro to Animation", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
+  // Tuesday mid
+  {name:"VEX Robotics (Team 1&2)", cost:"$1,300 +vol", cell:"tue-mid", slots:[["Tue",M(16,0),M(18,0)]]},
+  {name:"Creative Pages", cost:"$325", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,0)]]},
+  {name:"Drone Engineers", cost:"$1,800", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,0)]]},
+  {name:"Finance & Investment", cost:"$500", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,30)]]},
+  {name:"YouTube Celebrity", cost:"$1,800", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,0)]]},
+  // Wednesday mid
+  {name:"Aerospace & Rocketry", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
+  {name:"Entrepreneur Club", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
+  {name:"Visual Arts Club", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
+  // Monday late row (things running to 6)
+  {name:"HOSA", cost:"$2,500", cell:"mon-late", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"Science Olympiad", cost:"$2,500 +vol", cell:"mon-late", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+];
+
+// numeric cost for totals (base fee only)
+function baseCost(c){
+  const m = c.cost.match(/\$([\d,]+)/);
+  return m ? parseInt(m[1].replace(/,/g,'')) : 0;
+}
+function overlaps(a,b){
+  for(const [d1,s1,e1] of a.slots)
+    for(const [d2,s2,e2] of b.slots)
+      if(d1===d2 && s1<e2 && s2<e1) return true;
+  return false;
+}
+
+const selected = new Set();
+
+// build DOM
+CLUBS.forEach((c,i)=>{
+  c.id=i;
+  const el=document.createElement('div');
+  el.className='evt';
+  el.dataset.id=i;
+  el.innerHTML=`<span class="why">busy</span><b>${c.name}</b>
+    <small>${c.slots.map(s=>s[0]).join(' + ')}</small>
+    <small class="cost">${c.cost}</small>`;
+  el.onclick=()=>toggle(i);
+  document.getElementById(c.cell).appendChild(el);
+});
+
+function toggle(i){
+  const el=document.querySelector(`.evt[data-id="${i}"]`);
+  if(el.classList.contains('disabled')) return; // can't pick a conflicting one
+  if(selected.has(i)) selected.delete(i); else selected.add(i);
+  refresh();
+}
+function clearAll(){ selected.clear(); refresh(); }
+
+function refresh(){
+  // determine disabled = overlaps any selected (and not itself selected)
+  CLUBS.forEach((c,i)=>{
+    const el=document.querySelector(`.evt[data-id="${i}"]`);
+    el.classList.remove('selected','disabled');
+    if(selected.has(i)){ el.classList.add('selected'); return; }
+    for(const s of selected){
+      if(overlaps(c,CLUBS[s])){ el.classList.add('disabled'); break; }
+    }
+  });
+  // total + summary
+  let total=0; const names=[];
+  selected.forEach(i=>{ total+=baseCost(CLUBS[i]); names.push(CLUBS[i].name); });
+  document.getElementById('total').textContent='$'+total.toLocaleString();
+  document.getElementById('picks').textContent = names.length
+    ? 'Selected: '+names.join(' · ')
+    : 'No clubs selected yet — tap any club to start.';
+}
+refresh();
+</script>
 </body>
 </html>
