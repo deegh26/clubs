@@ -51,7 +51,10 @@
   .evt small{font-size:10px;display:block;opacity:.85;}
   .evt .cost{font-weight:700;opacity:1;}
   /* states */
+  .evt.cont{background:#f1f5ff;border-left:3px solid #93b4f5;}
+  .evt.cont b{opacity:.9;}
   .evt.selected{background:var(--sel);color:#fff;box-shadow:0 0 0 2px #fef3c7;border-color:var(--sel);}
+  .evt.cont.selected{border-left:3px solid #fff;}
   .evt.disabled{background:var(--disabled)!important;color:#9ca3af!important;cursor:not-allowed;filter:grayscale(1);opacity:.6;box-shadow:none;border-color:transparent;}
   .evt.disabled:hover{transform:none;}
   .evt .why{position:absolute;top:2px;right:4px;font-size:9px;font-weight:700;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:8px;display:none;}
@@ -166,10 +169,10 @@ CLUBS.forEach((c,i)=>{
   c.id=i;
   const targets = c.cells || [c.cell];
   targets.forEach((cellId,idx)=>{
-    const el=document.createElement('div');
-    el.className='evt';
-    el.dataset.id=i;
     const isCont = idx>0; // secondary placement shows a "(cont.)" hint
+    const el=document.createElement('div');
+    el.className = isCont ? 'evt cont' : 'evt';
+    el.dataset.id=i;
     el.innerHTML=`<span class="why">busy</span><b>${c.name}${isCont?' <em style="font-style:normal;opacity:.7">(cont.)</em>':''}</b>
       <small>${c.slots.map(s=>s[0]).join(' + ')}</small>
       <small class="cost">${c.cost}</small>
