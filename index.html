@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium Clubs — 7th Grade Boy (MUN Focus)</title>
+<title>Premium Clubs — 7th Grade Boy (Picks: S&D + VEX, MUN #2)</title>
 <style>
   :root{
-    --mun:#6d28d9;      /* MUN purple */
+    --pick:#d97706;     /* gold — top picks */
+    --mun:#6d28d9;      /* purple — MUN #2 */
     --conflict:#dc2626; /* red */
     --clear:#059669;    /* green */
     --grid:#e5e7eb;
@@ -18,7 +19,11 @@
     margin:0;padding:28px;background:#f8fafc;color:var(--ink);
   }
   h1{font-size:22px;margin:0 0 4px;}
-  .sub{color:#6b7280;font-size:13px;margin-bottom:18px;}
+  .sub{color:#6b7280;font-size:13px;margin-bottom:14px;}
+  .banner{
+    background:#fef2f2;border:1px solid #fecaca;color:#991b1b;
+    border-radius:10px;padding:11px 14px;font-size:13px;margin-bottom:18px;line-height:1.5;
+  }
   .legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:20px;font-size:13px;}
   .legend span{display:inline-flex;align-items:center;gap:7px;}
   .swatch{width:14px;height:14px;border-radius:3px;display:inline-block;}
@@ -45,26 +50,33 @@
     font-size:11.5px;line-height:1.25;
   }
   .evt b{display:block;font-size:11.5px;}
-  .evt small{font-size:10px;opacity:.9;}
+  .evt small{font-size:10px;opacity:.92;}
+  .evt .cost{font-weight:700;opacity:1;}
+  .pick{background:var(--pick);box-shadow:0 0 0 2px #fef3c7;}
   .mun{background:var(--mun);box-shadow:0 0 0 2px #ede9fe;}
   .conflict{background:var(--conflict);}
   .clear{background:var(--clear);}
   .tag{
     position:absolute;top:2px;right:4px;font-size:9px;font-weight:700;
-    background:rgba(255,255,255,.25);padding:1px 5px;border-radius:8px;
+    background:rgba(255,255,255,.28);padding:1px 5px;border-radius:8px;z-index:2;
   }
-  .note{font-size:12px;color:#6b7280;margin-top:18px;line-height:1.55;}
+  .note{font-size:12px;color:#6b7280;margin-top:18px;line-height:1.6;}
   .note b{color:var(--ink);}
 </style>
 </head>
 <body>
   <h1>Premium Clubs — 7th Grade Boy</h1>
-  <div class="sub">Weekly view · Focus: <b>Model United Nations</b> and how it conflicts with other premium clubs · Stratford Prep Blackford 2026–27</div>
+  <div class="sub">Weekly view · Picks: <b>Speech &amp; Debate</b> + <b>VEX Robotics</b> (#1) · <b>Model UN</b> (#2) · Stratford Prep Blackford 2026–27 · costs shown per club</div>
+
+  <div class="banner">
+    ⚠️ <b>MUN (#2) collides with Speech &amp; Debate (#1).</b> Both meet the exact same Mon 4:00–6:00 + Wed 4:00–5:00 slot — you can pick <b>one, not both</b>. HOSA &amp; Science Olympiad share that slot too.
+  </div>
 
   <div class="legend">
-    <span><i class="swatch mun"></i> Model UN (your pick)</span>
-    <span><i class="swatch conflict"></i> Conflicts with MUN</span>
-    <span><i class="swatch clear"></i> No conflict — can pair with MUN</span>
+    <span><i class="swatch pick"></i> Top picks (S&amp;D + VEX)</span>
+    <span><i class="swatch mun"></i> Model UN (#2)</span>
+    <span><i class="swatch conflict"></i> Conflicts with a pick</span>
+    <span><i class="swatch clear"></i> No conflict — free to add</span>
   </div>
 
   <div class="cal">
@@ -77,85 +89,86 @@
 
     <!-- ROW: 3:45 - 5:00 -->
     <div class="timecol">3:45<br>–5:00</div>
-    <!-- Monday -->
     <div class="cell"></div>
-    <!-- Tuesday -->
     <div class="cell"></div>
-    <!-- Wednesday -->
     <div class="cell"></div>
     <!-- Thursday -->
     <div class="cell">
-      <div class="evt clear"><b>AI Club</b><small>3:45–4:45 · Trimester</small></div>
-      <div class="evt clear"><b>American Sign Language</b><small>3:45–4:45</small></div>
-      <div class="evt clear"><b>Creative Writing</b><small>3:45–4:45 · Trimester</small></div>
-      <div class="evt clear"><b>Prompt Engineering</b><small>3:45–4:45</small></div>
-      <div class="evt clear"><b>VEX Robotics (Team 3&4)</b><small>3:45–5:45</small></div>
+      <div class="evt pick"><span class="tag">PICK</span><b>VEX Robotics (Team 3&4)</b><small>3:45–5:45 · 7–8th</small><small class="cost">$1,300 +$350 vol.</small></div>
+      <div class="evt conflict"><b>AI Club</b><small>3:45–4:45 · Trimester</small><small class="cost">$600 / trimester</small></div>
+      <div class="evt conflict"><b>American Sign Language</b><small>3:45–4:45</small><small class="cost">$325</small></div>
+      <div class="evt conflict"><b>Creative Writing</b><small>3:45–4:45 · Trimester</small><small class="cost">$500 / trimester</small></div>
+      <div class="evt conflict"><b>Prompt Engineering</b><small>3:45–4:45</small><small class="cost">$1,800</small></div>
     </div>
     <!-- Friday -->
     <div class="cell">
-      <div class="evt clear"><b>Builders Club</b><small>3:45–4:45</small></div>
-      <div class="evt clear"><b>Chess Club</b><small>3:45–4:45</small></div>
-      <div class="evt clear"><b>Cybersecurity Club</b><small>3:45–4:45</small></div>
-      <div class="evt clear"><b>Data Science Club</b><small>3:45–4:45</small></div>
-      <div class="evt clear"><b>Programming Invention</b><small>3:45–4:45</small></div>
-      <div class="evt clear"><b>Drama Club</b><small>3:45–5:00 (+Wed)</small></div>
+      <div class="evt clear"><b>Builders Club</b><small>3:45–4:45</small><small class="cost">$175</small></div>
+      <div class="evt clear"><b>Chess Club</b><small>3:45–4:45</small><small class="cost">$325</small></div>
+      <div class="evt clear"><b>Cybersecurity Club</b><small>3:45–4:45</small><small class="cost">$1,800</small></div>
+      <div class="evt clear"><b>Data Science Club</b><small>3:45–4:45</small><small class="cost">$325</small></div>
+      <div class="evt clear"><b>Programming Invention</b><small>3:45–4:45</small><small class="cost">$1,800</small></div>
+      <div class="evt clear"><b>Drama Club</b><small>3:45–5:00 (+Wed)</small><small class="cost">$200</small></div>
     </div>
 
     <!-- ROW: 4:00 - 5:00 -->
     <div class="timecol">4:00<br>–5:00</div>
     <!-- Monday -->
     <div class="cell">
-      <div class="evt mun"><span class="tag">PICK</span><b>Model UN</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small></div>
-      <div class="evt conflict"><b>Band</b><small>4:00–5:00</small></div>
-      <div class="evt conflict"><b>Board Game Design</b><small>4:00–5:00</small></div>
-      <div class="evt conflict"><b>Improv Club</b><small>4:00–5:00 · Trimester</small></div>
-      <div class="evt conflict"><b>Intro to Animation</b><small>4:00–5:00</small></div>
+      <div class="evt pick"><span class="tag">PICK</span><b>Speech &amp; Debate</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small><small class="cost">$1,500 +$350 vol.</small></div>
+      <div class="evt mun"><span class="tag">#2</span><b>Model UN</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small><small class="cost">$2,500 — clashes S&amp;D</small></div>
+      <div class="evt conflict"><b>Band</b><small>4:00–5:00</small><small class="cost">$325</small></div>
+      <div class="evt conflict"><b>Board Game Design</b><small>4:00–5:00</small><small class="cost">$325</small></div>
+      <div class="evt conflict"><b>Improv Club</b><small>4:00–5:00 · Trimester</small><small class="cost">$500 / trimester</small></div>
+      <div class="evt conflict"><b>Intro to Animation</b><small>4:00–5:00</small><small class="cost">$325</small></div>
     </div>
     <!-- Tuesday -->
     <div class="cell">
-      <div class="evt clear"><b>Creative Pages</b><small>4:00–5:00</small></div>
-      <div class="evt clear"><b>Drone Engineers</b><small>4:00–5:00</small></div>
-      <div class="evt clear"><b>Finance &amp; Investment</b><small>4:00–5:30</small></div>
-      <div class="evt clear"><b>YouTube Celebrity</b><small>4:00–5:00</small></div>
-      <div class="evt clear"><b>VEX Robotics (Team 1&2)</b><small>4:00–6:00</small></div>
+      <div class="evt pick"><span class="tag">PICK</span><b>VEX Robotics (Team 1&2)</b><small>4:00–6:00 · 7–8th</small><small class="cost">$1,300 +$350 vol.</small></div>
+      <div class="evt conflict"><b>Creative Pages</b><small>4:00–5:00</small><small class="cost">$325</small></div>
+      <div class="evt conflict"><b>Drone Engineers</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
+      <div class="evt conflict"><b>Finance &amp; Investment</b><small>4:00–5:30</small><small class="cost">$500</small></div>
+      <div class="evt conflict"><b>YouTube Celebrity</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
     </div>
     <!-- Wednesday -->
     <div class="cell">
-      <div class="evt mun"><b>Model UN</b><small>4:00–5:00 (Wed portion)</small></div>
-      <div class="evt conflict"><b>Aerospace &amp; Rocketry</b><small>4:00–5:00</small></div>
-      <div class="evt conflict"><b>Drama Club</b><small>4:00–5:30 (+Fri)</small></div>
-      <div class="evt conflict"><b>Entrepreneur Club</b><small>4:00–5:00</small></div>
-      <div class="evt conflict"><b>Visual Arts Club</b><small>4:00–5:00</small></div>
+      <div class="evt pick"><b>Speech &amp; Debate</b><small>4:00–5:00 (Wed portion)</small><small class="cost">incl. above</small></div>
+      <div class="evt mun"><b>Model UN</b><small>4:00–5:00 (Wed portion)</small><small class="cost">incl. above</small></div>
+      <div class="evt conflict"><b>Aerospace &amp; Rocketry</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
+      <div class="evt conflict"><b>Drama Club</b><small>4:00–5:30 (+Fri)</small><small class="cost">$200</small></div>
+      <div class="evt conflict"><b>Entrepreneur Club</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
+      <div class="evt conflict"><b>Visual Arts Club</b><small>4:00–5:00</small><small class="cost">$1,800</small></div>
     </div>
-    <!-- Thursday -->
     <div class="cell"></div>
-    <!-- Friday -->
     <div class="cell"></div>
 
     <!-- ROW: 5:00 - 6:00 -->
     <div class="timecol">5:00<br>–6:00</div>
     <!-- Monday -->
     <div class="cell">
+      <div class="evt pick"><b>Speech &amp; Debate (cont.)</b><small>runs to 6:00</small></div>
       <div class="evt mun"><b>Model UN (cont.)</b><small>runs to 6:00</small></div>
-      <div class="evt conflict"><b>HOSA</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small></div>
-      <div class="evt conflict"><b>Science Olympiad</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small></div>
-      <div class="evt conflict"><b>Speech &amp; Debate</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small></div>
+      <div class="evt conflict"><b>HOSA</b><small>Mon 4–6 &amp; Wed 4–5</small><small class="cost">$2,500</small></div>
+      <div class="evt conflict"><b>Science Olympiad</b><small>Mon 4–6 &amp; Wed 4–5</small><small class="cost">$2,500 +$350 vol.</small></div>
     </div>
     <!-- Tuesday -->
-    <div class="cell"></div>
-    <!-- Wednesday -->
+    <div class="cell">
+      <div class="evt pick"><b>VEX (cont.)</b><small>runs to 6:00</small></div>
+    </div>
     <div class="cell"></div>
     <!-- Thursday -->
-    <div class="cell"></div>
-    <!-- Friday -->
+    <div class="cell">
+      <div class="evt pick"><b>VEX (cont.)</b><small>runs to 5:45</small></div>
+    </div>
     <div class="cell"></div>
   </div>
 
   <div class="note">
-    <b>How to read this:</b> Model UN meets <b>Monday 4:00–6:00 PM</b> and <b>Wednesday 4:00–5:00 PM</b> (plus competitions). Anything in <span style="color:var(--conflict)"><b>red</b></span> overlaps one of those blocks and <b>cannot</b> be taken alongside MUN. Everything in <span style="color:var(--clear)"><b>green</b></span> meets on Tuesday, Thursday, or Friday and <b>pairs cleanly</b> with MUN.<br><br>
-    <b>Conflicting clubs (7):</b> Band, Board Game Design, Improv, Intro to Animation (Mon) · Aerospace &amp; Rocketry, Drama, Entrepreneur, Visual Arts (Wed) · HOSA, Science Olympiad, Speech &amp; Debate (both Mon+Wed — same slot as MUN).<br>
-    <b>Compatible clubs (14):</b> AI Club, ASL, Creative Writing, Prompt Engineering, VEX Robotics (Thu) · Builders, Chess, Cybersecurity, Data Science, Programming Invention (Fri) · Creative Pages, Drone Engineers, Finance &amp; Investment, YouTube Celebrity (Tue).<br>
-    <b>Excluded:</b> Girls Technovation Club (girls only). Note VEX Robotics, HOSA, Science Olympiad are 7th–8th grade only (fine for 7th).
+    <b>How to read this:</b> Your two top picks (<span style="color:var(--pick)"><b>gold</b></span>) — Speech &amp; Debate and VEX Robotics — plus Model UN as <span style="color:var(--mun)"><b>#2</b></span>. Red = overlaps a pick. Green = free to add.<br><br>
+    <b>VEX note:</b> you join <b>one</b> team — Team 1&amp;2 (<b>Tuesday</b>) <i>or</i> Team 3&amp;4 (<b>Thursday</b>). Whichever day you skip becomes free, turning those red clubs green.<br>
+    <b>MUN (#2) note:</b> same slot as Speech &amp; Debate — pick one. If you keep S&amp;D, MUN is out.<br><br>
+    <b>Cost of your picks:</b> Speech &amp; Debate <b>$1,500</b> (+$350 volunteer) · VEX Robotics <b>$1,300</b> (+$350 volunteer). MUN if chosen instead of S&amp;D: <b>$2,500</b>.<br>
+    <b>Always-free day:</b> <b>Friday</b> — Builders ($175), Chess ($325), Cybersecurity ($1,800), Data Science ($325), Programming Invention ($1,800), Drama ($200) all pair with your picks with zero conflict.<br>
+    <b>Excluded:</b> Girls Technovation Club (girls only). VEX, HOSA, Science Olympiad are 7th–8th grade only (fine for 7th).
   </div>
 </body>
 </html>
