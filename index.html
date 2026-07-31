@@ -124,10 +124,10 @@ const CLUBS = [
   {name:"Cybersecurity Club", cost:"$1,800", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
   {name:"Data Science Club", cost:"$325", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
   {name:"Programming Invention", cost:"$1,800", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
-  {name:"Drama Club", cost:"$200", cell:"fri-early", slots:[["Fri",M(15,45),M(17,0)],["Wed",M(16,0),M(17,30)]]},
+  {name:"Drama Club", cost:"$200", cell:"fri-early", cells:["fri-early","wed-mid"], slots:[["Fri",M(15,45),M(17,0)],["Wed",M(16,0),M(17,30)]]},
   // Monday mid
-  {name:"Model United Nations", cost:"$2,500", cell:"mon-mid", fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
-  {name:"Speech & Debate", cost:"$1,500 +vol", cell:"mon-mid", fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"Model United Nations", cost:"$2,500", cell:"mon-mid", cells:["mon-mid","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"Speech & Debate", cost:"$1,500 +vol", cell:"mon-mid", cells:["mon-mid","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
   {name:"Band", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
   {name:"Board Game Design", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
   {name:"Improv Club", cost:"$500/tri", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
@@ -143,8 +143,8 @@ const CLUBS = [
   {name:"Entrepreneur Club", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
   {name:"Visual Arts Club", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
   // Monday late row (things running to 6)
-  {name:"HOSA", cost:"$2,500", cell:"mon-late", fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
-  {name:"Science Olympiad", cost:"$2,500 +vol", cell:"mon-late", fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"HOSA", cost:"$2,500", cell:"mon-late", cells:["mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"Science Olympiad", cost:"$2,500 +vol", cell:"mon-late", cells:["mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
 ];
 
 // numeric cost for totals (base fee only)
@@ -164,15 +164,19 @@ const selected = new Set();
 // build DOM
 CLUBS.forEach((c,i)=>{
   c.id=i;
-  const el=document.createElement('div');
-  el.className='evt';
-  el.dataset.id=i;
-  el.innerHTML=`<span class="why">busy</span><b>${c.name}</b>
-    <small>${c.slots.map(s=>s[0]).join(' + ')}</small>
-    <small class="cost">${c.cost}</small>
-    ${c.fly ? '<span class="fly">✈ travels</span>' : ''}`;
-  el.onclick=()=>toggle(i);
-  document.getElementById(c.cell).appendChild(el);
+  const targets = c.cells || [c.cell];
+  targets.forEach((cellId,idx)=>{
+    const el=document.createElement('div');
+    el.className='evt';
+    el.dataset.id=i;
+    const isCont = idx>0; // secondary placement shows a "(cont.)" hint
+    el.innerHTML=`<span class="why">busy</span><b>${c.name}${isCont?' <em style="font-style:normal;opacity:.7">(cont.)</em>':''}</b>
+      <small>${c.slots.map(s=>s[0]).join(' + ')}</small>
+      <small class="cost">${c.cost}</small>
+      ${c.fly ? '<span class="fly">✈ travels</span>' : ''}`;
+    el.onclick=()=>toggle(i);
+    document.getElementById(cellId).appendChild(el);
+  });
 });
 
 function toggle(i){
@@ -186,14 +190,15 @@ function clearAll(){ selected.clear(); refresh(); }
 function refresh(){
   // determine disabled = overlaps any selected, OR shares a mutual-exclusion group with a selected club (and not itself selected)
   CLUBS.forEach((c,i)=>{
-    const el=document.querySelector(`.evt[data-id="${i}"]`);
-    el.classList.remove('selected','disabled');
-    if(selected.has(i)){ el.classList.add('selected'); return; }
-    for(const s of selected){
-      if(overlaps(c,CLUBS[s]) || (c.group && c.group===CLUBS[s].group)){
-        el.classList.add('disabled'); break;
+    const els=document.querySelectorAll(`.evt[data-id="${i}"]`);
+    let state='';
+    if(selected.has(i)){ state='selected'; }
+    else {
+      for(const s of selected){
+        if(overlaps(c,CLUBS[s]) || (c.group && c.group===CLUBS[s].group)){ state='disabled'; break; }
       }
     }
+    els.forEach(el=>{ el.classList.remove('selected','disabled'); if(state) el.classList.add(state); });
   });
   // total + summary
   let total=0; const names=[];
