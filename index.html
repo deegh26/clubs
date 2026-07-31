@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Clubs — 7th Grade Boy (MUN Focus)</title>
+<style>
+  :root{
+    --mun:#6d28d9;      /* MUN purple */
+    --conflict:#dc2626; /* red */
+    --clear:#059669;    /* green */
+    --grid:#e5e7eb;
+    --ink:#1f2937;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:-apple-system,"SF Pro Text",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    margin:0;padding:28px;background:#f8fafc;color:var(--ink);
+  }
+  h1{font-size:22px;margin:0 0 4px;}
+  .sub{color:#6b7280;font-size:13px;margin-bottom:18px;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:20px;font-size:13px;}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{width:14px;height:14px;border-radius:3px;display:inline-block;}
+  .cal{
+    display:grid;
+    grid-template-columns:70px repeat(5,1fr);
+    border:1px solid var(--grid);border-radius:12px;overflow:hidden;
+    background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.05);
+  }
+  .hdr{
+    background:#111827;color:#fff;font-weight:600;font-size:13px;
+    padding:12px 8px;text-align:center;
+  }
+  .timecol{
+    background:#f9fafb;border-top:1px solid var(--grid);
+    font-size:11px;color:#9ca3af;padding:6px;text-align:right;
+  }
+  .cell{
+    border-top:1px solid var(--grid);border-left:1px solid var(--grid);
+    min-height:58px;padding:4px;position:relative;
+  }
+  .evt{
+    border-radius:7px;padding:5px 7px;margin-bottom:4px;color:#fff;
+    font-size:11.5px;line-height:1.25;
+  }
+  .evt b{display:block;font-size:11.5px;}
+  .evt small{font-size:10px;opacity:.9;}
+  .mun{background:var(--mun);box-shadow:0 0 0 2px #ede9fe;}
+  .conflict{background:var(--conflict);}
+  .clear{background:var(--clear);}
+  .tag{
+    position:absolute;top:2px;right:4px;font-size:9px;font-weight:700;
+    background:rgba(255,255,255,.25);padding:1px 5px;border-radius:8px;
+  }
+  .note{font-size:12px;color:#6b7280;margin-top:18px;line-height:1.55;}
+  .note b{color:var(--ink);}
+</style>
+</head>
+<body>
+  <h1>Premium Clubs — 7th Grade Boy</h1>
+  <div class="sub">Weekly view · Focus: <b>Model United Nations</b> and how it conflicts with other premium clubs · Stratford Prep Blackford 2026–27</div>
+
+  <div class="legend">
+    <span><i class="swatch mun"></i> Model UN (your pick)</span>
+    <span><i class="swatch conflict"></i> Conflicts with MUN</span>
+    <span><i class="swatch clear"></i> No conflict — can pair with MUN</span>
+  </div>
+
+  <div class="cal">
+    <div class="hdr">Time</div>
+    <div class="hdr">Monday</div>
+    <div class="hdr">Tuesday</div>
+    <div class="hdr">Wednesday</div>
+    <div class="hdr">Thursday</div>
+    <div class="hdr">Friday</div>
+
+    <!-- ROW: 3:45 - 5:00 -->
+    <div class="timecol">3:45<br>–5:00</div>
+    <!-- Monday -->
+    <div class="cell"></div>
+    <!-- Tuesday -->
+    <div class="cell"></div>
+    <!-- Wednesday -->
+    <div class="cell"></div>
+    <!-- Thursday -->
+    <div class="cell">
+      <div class="evt clear"><b>AI Club</b><small>3:45–4:45 · Trimester</small></div>
+      <div class="evt clear"><b>American Sign Language</b><small>3:45–4:45</small></div>
+      <div class="evt clear"><b>Creative Writing</b><small>3:45–4:45 · Trimester</small></div>
+      <div class="evt clear"><b>Prompt Engineering</b><small>3:45–4:45</small></div>
+      <div class="evt clear"><b>VEX Robotics (Team 3&4)</b><small>3:45–5:45</small></div>
+    </div>
+    <!-- Friday -->
+    <div class="cell">
+      <div class="evt clear"><b>Builders Club</b><small>3:45–4:45</small></div>
+      <div class="evt clear"><b>Chess Club</b><small>3:45–4:45</small></div>
+      <div class="evt clear"><b>Cybersecurity Club</b><small>3:45–4:45</small></div>
+      <div class="evt clear"><b>Data Science Club</b><small>3:45–4:45</small></div>
+      <div class="evt clear"><b>Programming Invention</b><small>3:45–4:45</small></div>
+      <div class="evt clear"><b>Drama Club</b><small>3:45–5:00 (+Wed)</small></div>
+    </div>
+
+    <!-- ROW: 4:00 - 5:00 -->
+    <div class="timecol">4:00<br>–5:00</div>
+    <!-- Monday -->
+    <div class="cell">
+      <div class="evt mun"><span class="tag">PICK</span><b>Model UN</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small></div>
+      <div class="evt conflict"><b>Band</b><small>4:00–5:00</small></div>
+      <div class="evt conflict"><b>Board Game Design</b><small>4:00–5:00</small></div>
+      <div class="evt conflict"><b>Improv Club</b><small>4:00–5:00 · Trimester</small></div>
+      <div class="evt conflict"><b>Intro to Animation</b><small>4:00–5:00</small></div>
+    </div>
+    <!-- Tuesday -->
+    <div class="cell">
+      <div class="evt clear"><b>Creative Pages</b><small>4:00–5:00</small></div>
+      <div class="evt clear"><b>Drone Engineers</b><small>4:00–5:00</small></div>
+      <div class="evt clear"><b>Finance &amp; Investment</b><small>4:00–5:30</small></div>
+      <div class="evt clear"><b>YouTube Celebrity</b><small>4:00–5:00</small></div>
+      <div class="evt clear"><b>VEX Robotics (Team 1&2)</b><small>4:00–6:00</small></div>
+    </div>
+    <!-- Wednesday -->
+    <div class="cell">
+      <div class="evt mun"><b>Model UN</b><small>4:00–5:00 (Wed portion)</small></div>
+      <div class="evt conflict"><b>Aerospace &amp; Rocketry</b><small>4:00–5:00</small></div>
+      <div class="evt conflict"><b>Drama Club</b><small>4:00–5:30 (+Fri)</small></div>
+      <div class="evt conflict"><b>Entrepreneur Club</b><small>4:00–5:00</small></div>
+      <div class="evt conflict"><b>Visual Arts Club</b><small>4:00–5:00</small></div>
+    </div>
+    <!-- Thursday -->
+    <div class="cell"></div>
+    <!-- Friday -->
+    <div class="cell"></div>
+
+    <!-- ROW: 5:00 - 6:00 -->
+    <div class="timecol">5:00<br>–6:00</div>
+    <!-- Monday -->
+    <div class="cell">
+      <div class="evt mun"><b>Model UN (cont.)</b><small>runs to 6:00</small></div>
+      <div class="evt conflict"><b>HOSA</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small></div>
+      <div class="evt conflict"><b>Science Olympiad</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small></div>
+      <div class="evt conflict"><b>Speech &amp; Debate</b><small>Mon 4:00–6:00 &amp; Wed 4:00–5:00</small></div>
+    </div>
+    <!-- Tuesday -->
+    <div class="cell"></div>
+    <!-- Wednesday -->
+    <div class="cell"></div>
+    <!-- Thursday -->
+    <div class="cell"></div>
+    <!-- Friday -->
+    <div class="cell"></div>
+  </div>
+
+  <div class="note">
+    <b>How to read this:</b> Model UN meets <b>Monday 4:00–6:00 PM</b> and <b>Wednesday 4:00–5:00 PM</b> (plus competitions). Anything in <span style="color:var(--conflict)"><b>red</b></span> overlaps one of those blocks and <b>cannot</b> be taken alongside MUN. Everything in <span style="color:var(--clear)"><b>green</b></span> meets on Tuesday, Thursday, or Friday and <b>pairs cleanly</b> with MUN.<br><br>
+    <b>Conflicting clubs (7):</b> Band, Board Game Design, Improv, Intro to Animation (Mon) · Aerospace &amp; Rocketry, Drama, Entrepreneur, Visual Arts (Wed) · HOSA, Science Olympiad, Speech &amp; Debate (both Mon+Wed — same slot as MUN).<br>
+    <b>Compatible clubs (14):</b> AI Club, ASL, Creative Writing, Prompt Engineering, VEX Robotics (Thu) · Builders, Chess, Cybersecurity, Data Science, Programming Invention (Fri) · Creative Pages, Drone Engineers, Finance &amp; Investment, YouTube Celebrity (Tue).<br>
+    <b>Excluded:</b> Girls Technovation Club (girls only). Note VEX Robotics, HOSA, Science Olympiad are 7th–8th grade only (fine for 7th).
+  </div>
+</body>
+</html>
