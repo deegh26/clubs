@@ -126,25 +126,25 @@ const CLUBS = [
   {name:"Programming Invention", cost:"$1,800", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
   {name:"Drama Club", cost:"$200", cell:"fri-early", cells:["fri-early","wed-mid"], slots:[["Fri",M(15,45),M(17,0)],["Wed",M(16,0),M(17,30)]]},
   // Monday mid
-  {name:"Model United Nations", cost:"$2,500", cell:"mon-mid", cells:["mon-mid","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
-  {name:"Speech & Debate", cost:"$1,500 +vol", cell:"mon-mid", cells:["mon-mid","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"Model United Nations", cost:"$2,500", cell:"mon-mid", cells:["mon-mid","mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"Speech & Debate", cost:"$1,500 +vol", cell:"mon-mid", cells:["mon-mid","mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
   {name:"Band", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
   {name:"Board Game Design", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
   {name:"Improv Club", cost:"$500/tri", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
   {name:"Intro to Animation", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
   // Tuesday mid
-  {name:"VEX Robotics (Team 1&2)", cost:"$1,300 +vol", cell:"tue-mid", fly:1, group:"vex", slots:[["Tue",M(16,0),M(18,0)]]},
+  {name:"VEX Robotics (Team 1&2)", cost:"$1,300 +vol", cell:"tue-mid", cells:["tue-mid","tue-late"], fly:1, group:"vex", slots:[["Tue",M(16,0),M(18,0)]]},
   {name:"Creative Pages", cost:"$325", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,0)]]},
   {name:"Drone Engineers", cost:"$1,800", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,0)]]},
-  {name:"Finance & Investment", cost:"$500", cell:"tue-mid", fly:1, slots:[["Tue",M(16,0),M(17,30)]]},
+  {name:"Finance & Investment", cost:"$500", cell:"tue-mid", cells:["tue-mid","tue-late"], fly:1, slots:[["Tue",M(16,0),M(17,30)]]},
   {name:"YouTube Celebrity", cost:"$1,800", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,0)]]},
   // Wednesday mid
   {name:"Aerospace & Rocketry", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
   {name:"Entrepreneur Club", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
   {name:"Visual Arts Club", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
   // Monday late row (things running to 6)
-  {name:"HOSA", cost:"$2,500", cell:"mon-late", cells:["mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
-  {name:"Science Olympiad", cost:"$2,500 +vol", cell:"mon-late", cells:["mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"HOSA", cost:"$2,500", cell:"mon-late", cells:["mon-mid","mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
+  {name:"Science Olympiad", cost:"$2,500 +vol", cell:"mon-late", cells:["mon-mid","mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
 ];
 
 // numeric cost for totals (base fee only)
