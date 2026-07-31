@@ -6,7 +6,7 @@
 <title>Interactive Premium Clubs Planner — 7th Grade Boy</title>
 <style>
   :root{
-    --sel:#d97706;      /* gold — selected */
+    --sel:#d97706;
     --grid:#e5e7eb;
     --ink:#1f2937;
     --disabled:#e5e7eb;
@@ -33,183 +33,249 @@
   }
   .bar button:hover{background:#f3f4f6;}
   .hint{font-size:12px;color:#9ca3af;margin-bottom:12px;}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;margin-bottom:12px;color:#6b7280;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:26px;height:14px;border-radius:4px;display:inline-block;border:1px solid rgba(0,0,0,.06);}
+
+  /* time-scaled calendar */
   .cal{
-    display:grid;grid-template-columns:64px repeat(5,1fr);
+    display:grid;grid-template-columns:repeat(5,1fr);gap:0;
     border:1px solid var(--grid);border-radius:12px;overflow:hidden;
     background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.05);
   }
-  .hdr{background:#111827;color:#fff;font-weight:600;font-size:13px;padding:12px 8px;text-align:center;}
-  .timecol{background:#f9fafb;border-top:1px solid var(--grid);font-size:11px;color:#9ca3af;padding:6px;text-align:right;}
-  .cell{border-top:1px solid var(--grid);border-left:1px solid var(--grid);min-height:56px;padding:4px;}
+  .col{border-left:1px solid var(--grid);}
+  .col:first-child{border-left:none;}
+  .colhdr{background:#111827;color:#fff;font-weight:600;font-size:13px;padding:12px 8px;text-align:center;}
+  .stack{padding:6px;display:flex;flex-direction:column;gap:6px;min-height:120px;}
+
   .evt{
-    border-radius:7px;padding:5px 7px;margin-bottom:4px;font-size:11.5px;line-height:1.28;
+    border-radius:8px;padding:7px 9px;font-size:11.5px;line-height:1.3;
     cursor:pointer;border:1px solid transparent;background:#eef2ff;color:#3730a3;
-    transition:all .12s ease;user-select:none;position:relative;
+    transition:all .12s ease;user-select:none;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:flex-start;
   }
   .evt:hover{filter:brightness(.97);transform:translateY(-1px);}
-  .evt b{display:block;font-size:11.5px;}
-  .evt small{font-size:10px;display:block;opacity:.85;}
-  .evt .cost{font-weight:700;opacity:1;}
+  .evt b{display:block;font-size:12px;}
+  .evt .tm{font-size:10px;font-weight:600;opacity:.75;margin-top:1px;}
+  .evt .cost{font-size:10px;font-weight:700;margin-top:2px;}
+  .evt .fly{font-size:10px;font-weight:700;color:#0369a1;background:#e0f2fe;padding:1px 5px;border-radius:8px;display:inline-block;margin-top:4px;align-self:flex-start;}
+  /* duration marker down the left edge */
+  .evt::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#c7d2fe;}
+
   /* states */
-  .evt.cont{background:#f1f5ff;border-left:3px solid #93b4f5;}
-  .evt.cont b{opacity:.9;}
+  .evt.cont{background:#f1f5ff;}
+  .evt.cont::before{background:#93b4f5;}
+  .evt.cont b em{font-style:normal;opacity:.7;font-weight:600;}
   .evt.selected{background:var(--sel);color:#fff;box-shadow:0 0 0 2px #fef3c7;border-color:var(--sel);}
-  .evt.cont.selected{border-left:3px solid #fff;}
-  .evt.disabled{background:var(--disabled)!important;color:#9ca3af!important;cursor:not-allowed;filter:grayscale(1);opacity:.6;box-shadow:none;border-color:transparent;}
-  .evt.disabled:hover{transform:none;}
-  .evt .why{position:absolute;top:2px;right:4px;font-size:9px;font-weight:700;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:8px;display:none;}
-  .evt.disabled .why{display:inline;}
-  .evt .fly{font-size:10px;font-weight:700;color:#0369a1;background:#e0f2fe;padding:1px 5px;border-radius:8px;display:inline-block;margin-top:2px;}
+  .evt.selected::before{background:#fff;}
   .evt.selected .fly{color:#fff;background:rgba(255,255,255,.25);}
+  .evt.disabled{background:var(--disabled)!important;color:#9ca3af!important;cursor:not-allowed;filter:grayscale(1);opacity:.6;box-shadow:none;}
+  .evt.disabled::before{background:#cbd5e1;}
+  .evt.disabled:hover{transform:none;}
+  .evt .why{position:absolute;top:4px;right:6px;font-size:9px;font-weight:700;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:8px;display:none;}
+  .evt.disabled .why{display:inline;}
   .evt.disabled .fly{color:#9ca3af;background:rgba(0,0,0,.05);}
+
   .note{font-size:12px;color:#6b7280;margin-top:16px;line-height:1.6;}
   .note b{color:var(--ink);}
+
+  /* hover tooltip */
+  #tip{
+    position:fixed;z-index:50;max-width:320px;pointer-events:none;
+    background:#111827;color:#f9fafb;border-radius:10px;padding:11px 13px;
+    font-size:12px;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.28);
+    opacity:0;transition:opacity .12s ease;
+  }
+  #tip.show{opacity:1;}
+  #tip .t-name{font-weight:700;font-size:13px;margin-bottom:2px;}
+  #tip .t-meta{font-size:11px;color:#a5b4fc;margin-bottom:6px;}
+  #tip .t-pre{margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.15);color:#fcd34d;}
+  #tip .t-pre b{color:#fde68a;}
 </style>
 </head>
 <body>
+<div id="tip"></div>
   <h1>Interactive Premium Clubs Planner</h1>
-  <div class="sub">7th-grade boy · Stratford Prep Blackford 2026–27 · <b>click a club to select</b> — conflicting times gray out automatically</div>
+  <div class="sub">7th-grade boy · Stratford Prep Blackford 2026–27 · <b>card height = how long the club runs</b> · click to select — conflicts gray out</div>
 
   <div class="bar">
     <div class="total">Total: <span id="total">$0</span></div>
     <div class="picks" id="picks">No clubs selected yet — tap any club to start.</div>
     <button onclick="clearAll()">Clear all</button>
   </div>
-  <div class="hint">💡 Selected = gold. Grayed-out = overlaps something you picked. Click a selected club again to remove it.</div>
 
-  <div class="cal" id="cal">
-    <div class="hdr">Time</div>
-    <div class="hdr">Monday</div><div class="hdr">Tuesday</div><div class="hdr">Wednesday</div>
-    <div class="hdr">Thursday</div><div class="hdr">Friday</div>
-
-    <!-- Row 3:45–5:00 -->
-    <div class="timecol">3:45<br>–5:00</div>
-    <div class="cell" data-day="Mon"></div>
-    <div class="cell" data-day="Tue"></div>
-    <div class="cell" data-day="Wed"></div>
-    <div class="cell" data-day="Thu" id="thu-early"></div>
-    <div class="cell" data-day="Fri" id="fri-early"></div>
-
-    <!-- Row 4:00–5:00 -->
-    <div class="timecol">4:00<br>–5:00</div>
-    <div class="cell" id="mon-mid"></div>
-    <div class="cell" id="tue-mid"></div>
-    <div class="cell" id="wed-mid"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-
-    <!-- Row 5:00–6:00 -->
-    <div class="timecol">5:00<br>–6:00</div>
-    <div class="cell" id="mon-late"></div>
-    <div class="cell" id="tue-late"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
+  <div class="legend">
+    <span><i class="sw" style="background:#eef2ff"></i> Available</span>
+    <span><i class="sw" style="background:#f1f5ff;border-left:4px solid #93b4f5"></i> 2nd meeting (same club, other day)</span>
+    <span><i class="sw" style="background:#d97706"></i> Selected</span>
+    <span><i class="sw" style="background:#e5e7eb"></i> Blocked by a conflict</span>
+    <span>✈ = has conferences/competitions (travel)</span>
   </div>
+  <div class="hint">💡 Taller card = longer session. A club that meets two days shows once per day (2nd day tinted). Selecting any copy selects them all.</div>
+
+  <div class="cal" id="cal"></div>
 
   <div class="note">
-    <b>Notes:</b> VEX has two teams — you'd join one (Tue <i>or</i> Thu). MUN &amp; Speech &amp; Debate share the same Mon 4–6 + Wed 4–5 slot (with HOSA &amp; Science Olympiad), so picking one grays the others. Girls Technovation excluded (girls only). Costs shown are the base club fee; "+vol" = additional $350 parent-volunteer fee if you can't volunteer.
+    <b>Notes:</b> VEX has two teams — pick one (Tue <i>or</i> Thu); the other locks. MUN, Speech &amp; Debate, HOSA &amp; Science Olympiad all share the Mon 4–6 + Wed 4–5 slot, so picking one locks the rest. Costs shown are the base club fee; "+vol" = extra $350 parent-volunteer fee if you can't volunteer. Girls Technovation excluded (girls only).
   </div>
 
 <script>
-// each club: id, name, cost label, and meeting slots [day, startMin, endMin]
-const M = (h,m)=>h*60+m;
-const CLUBS = [
-  // Thursday early row
-  {name:"VEX Robotics (Team 3&4)", cost:"$1,300 +vol", cell:"thu-early", fly:1, group:"vex", slots:[["Thu",M(15,45),M(17,45)]]},
-  {name:"AI Club", cost:"$600/tri", cell:"thu-early", slots:[["Thu",M(15,45),M(16,45)]]},
-  {name:"American Sign Language", cost:"$325", cell:"thu-early", slots:[["Thu",M(15,45),M(16,45)]]},
-  {name:"Creative Writing", cost:"$500/tri", cell:"thu-early", slots:[["Thu",M(15,45),M(16,45)]]},
-  {name:"Prompt Engineering", cost:"$1,800", cell:"thu-early", slots:[["Thu",M(15,45),M(16,45)]]},
-  // Friday early row
-  {name:"Builders Club", cost:"$175", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
-  {name:"Chess Club", cost:"$325", cell:"fri-early", fly:1, slots:[["Fri",M(15,45),M(16,45)]]},
-  {name:"Cybersecurity Club", cost:"$1,800", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
-  {name:"Data Science Club", cost:"$325", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
-  {name:"Programming Invention", cost:"$1,800", cell:"fri-early", slots:[["Fri",M(15,45),M(16,45)]]},
-  {name:"Drama Club", cost:"$200", cell:"fri-early", cells:["fri-early","wed-mid"], slots:[["Fri",M(15,45),M(17,0)],["Wed",M(16,0),M(17,30)]]},
-  // Monday mid
-  {name:"Model United Nations", cost:"$2,500", cell:"mon-mid", cells:["mon-mid","mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
-  {name:"Speech & Debate", cost:"$1,500 +vol", cell:"mon-mid", cells:["mon-mid","mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
-  {name:"Band", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
-  {name:"Board Game Design", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
-  {name:"Improv Club", cost:"$500/tri", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
-  {name:"Intro to Animation", cost:"$325", cell:"mon-mid", slots:[["Mon",M(16,0),M(17,0)]]},
-  // Tuesday mid
-  {name:"VEX Robotics (Team 1&2)", cost:"$1,300 +vol", cell:"tue-mid", cells:["tue-mid","tue-late"], fly:1, group:"vex", slots:[["Tue",M(16,0),M(18,0)]]},
-  {name:"Creative Pages", cost:"$325", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,0)]]},
-  {name:"Drone Engineers", cost:"$1,800", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,0)]]},
-  {name:"Finance & Investment", cost:"$500", cell:"tue-mid", cells:["tue-mid","tue-late"], fly:1, slots:[["Tue",M(16,0),M(17,30)]]},
-  {name:"YouTube Celebrity", cost:"$1,800", cell:"tue-mid", slots:[["Tue",M(16,0),M(17,0)]]},
-  // Wednesday mid
-  {name:"Aerospace & Rocketry", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
-  {name:"Entrepreneur Club", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
-  {name:"Visual Arts Club", cost:"$1,800", cell:"wed-mid", slots:[["Wed",M(16,0),M(17,0)]]},
-  // Monday late row (things running to 6)
-  {name:"HOSA", cost:"$2,500", cell:"mon-late", cells:["mon-mid","mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
-  {name:"Science Olympiad", cost:"$2,500 +vol", cell:"mon-late", cells:["mon-mid","mon-late","wed-mid"], fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]]},
-];
+const M=(h,m)=>h*60+m;
+const DAYS=["Mon","Tue","Wed","Thu","Fri"];
+const DAYNAME={Mon:"Monday",Tue:"Tuesday",Wed:"Wednesday",Thu:"Thursday",Fri:"Friday"};
+const PXMIN=1.15; // pixels per minute of duration
 
-// numeric cost for totals (base fee only)
-function baseCost(c){
-  const m = c.cost.match(/\$([\d,]+)/);
-  return m ? parseInt(m[1].replace(/,/g,'')) : 0;
+// each club: name, cost, optional fly/group, and slots [day,start,end]
+const CLUBS=[
+  {name:"Aerospace & Rocketry", cost:"$1,800", slots:[["Wed",M(16,0),M(17,0)]],
+    desc:"Hands-on intro to aviation, space science &amp; engineering design — paper airplanes, gliders, parachutes, balloon &amp; straw rockets, payload/landing challenges. Teacher: Xtatic."},
+  {name:"AI Club", cost:"$600/tri", slots:[["Thu",M(15,45),M(16,45)]],
+    desc:"Trimester-based. Fundamentals of AI via hands-on Python, inspired by Harvard CS50 AI — machine learning, graph search (BFS/DFS), classification, optimization &amp; reinforcement learning. Teacher: Xtatic."},
+  {name:"American Sign Language", cost:"$325", slots:[["Thu",M(15,45),M(16,45)]],
+    desc:"Beginner's guide to ASL — basics plus the culture of the language. No experience necessary."},
+  {name:"Band", cost:"$325", slots:[["Mon",M(16,0),M(17,0)]],
+    desc:"Learn flute, clarinet, sax, trumpet, trombone or percussion for 7th/8th grade music. Performs in Winter &amp; Spring concerts.", prereq:"Bring music book, pencil, instrument (except percussion), extra reeds (clarinet/alto sax)."},
+  {name:"Board Game Design", cost:"$325", slots:[["Mon",M(16,0),M(17,0)]],
+    desc:"Explore board-game genres (abstract, card, dice, word) by playing then designing your own. Led by a professional game designer — concept to prototype to published product."},
+  {name:"Builders Club", cost:"$175", slots:[["Fri",M(15,45),M(16,45)]],
+    desc:"Largest middle-school service organization (45,000+ members worldwide). Student-led community service; develop servant-leader skills. + optional service projects outside school."},
+  {name:"Chess Club", cost:"$325", fly:1, slots:[["Fri",M(15,45),M(16,45)]],
+    desc:"Improve strategy &amp; critical thinking for all skill levels. Compete in open weekend tournaments around the Bay Area."},
+  {name:"Creative Pages", cost:"$325", slots:[["Tue",M(16,0),M(17,0)]],
+    desc:"Self-expression through vision boards, scrapbooking, junk journaling &amp; zines. Craft, share ideas, tell stories &amp; set goals in a supportive space."},
+  {name:"Creative Writing", cost:"$500/tri", slots:[["Thu",M(15,45),M(16,45)]],
+    desc:"Trimester-based. Explore short stories, poetry, personal essays &amp; scripts — character, plot &amp; dialogue via workshops &amp; peer reviews. Teacher: Concorde Education."},
+  {name:"Cybersecurity Club", cost:"$1,800", slots:[["Fri",M(15,45),M(16,45)]],
+    desc:"Advanced training for real-world cybersecurity competitions — CTF, CyberPatriot, picoCTF. Resume-worthy, college-application standout. Teacher: Xtatic."},
+  {name:"Data Science Club", cost:"$325", slots:[["Fri",M(15,45),M(16,45)]],
+    desc:"Extension of the award-winning HS program. Code in Python, analyze real data, build ML models &amp; train for competitions. Serious, competitive environment."},
+  {name:"Drama Club", cost:"$200", slots:[["Wed",M(16,0),M(17,30)],["Fri",M(15,45),M(17,0)]],
+    desc:"High-commitment club producing a theatrical show. Audition for a role or join stage crew (lights, sound, set, props). Spring performances on the school stage.", prereq:"Audition (tryouts 08/19–08/21, 3:50–5:30 PM, Room E3). Prepare a 60-sec monologue + 30 sec of a song + a printed photo. Stage-crew: application instead."},
+  {name:"Drone Engineers", cost:"$1,800", slots:[["Tue",M(16,0),M(17,0)]],
+    desc:"Advanced drone technology, autonomous systems &amp; engineering. Hands-on piloting, programming &amp; team missions — design, code &amp; execute your own flights. Teacher: Xtatic."},
+  {name:"Entrepreneur Club", cost:"$1,800", slots:[["Wed",M(16,0),M(17,0)]],
+    desc:"Launch mock companies, manage investments &amp; prep IPOs. Business planning, marketing/branding, financial literacy, mock stock-market challenge &amp; pitching. Teacher: Xtatic."},
+  {name:"Finance & Investment", cost:"$500", fly:1, slots:[["Tue",M(16,0),M(17,30)]],
+    desc:"Three focus areas: finance education, finance &amp; economics competitions, and due diligence / making investment decisions."},
+  {name:"HOSA", cost:"$2,500", fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]],
+    desc:"Healthcare Occupation Students of America — health-science curriculum, professional development, speaker series &amp; healthcare competitions (Medical Debate, Pharmacology, First Aid) at regional/state conferences. Fee includes 1-day local + 3-day State conference.", prereq:"7th &amp; 8th grade only."},
+  {name:"Improv Club", cost:"$500/tri", slots:[["Mon",M(16,0),M(17,0)]],
+    desc:"Trimester-based. Improvisational theater — quick thinking, creativity &amp; collaboration. 'Yes, and' thinking, character &amp; scene-building without a script. Teacher: Concorde Education."},
+  {name:"Intro to Animation", cost:"$325", slots:[["Mon",M(16,0),M(17,0)]],
+    desc:"Introduction to animation — basics &amp; principles working in a 2D animation program. Fun, rewarding &amp; creative."},
+  {name:"Model United Nations", cost:"$2,500", fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]],
+    desc:"Academic simulation of real-world diplomacy — role-play global leaders debating climate, food security, disarmament &amp; more. Research deeply, speak persuasively, collaborate. MS travels locally (Stanford, UC Berkeley, Gunn, Nueva); hosts own SPBMUN conference. 35+ awards in 3 years."},
+  {name:"Programming Invention", cost:"$1,800", slots:[["Fri",M(15,45),M(16,45)]],
+    desc:"Intensive program blending advanced programming with electrical engineering — build smart real-world devices with C++ &amp; Arduino, circuits, sensors &amp; microcontrollers. Teacher: Xtatic.", prereq:"Solid grasp of programming fundamentals."},
+  {name:"Prompt Engineering", cost:"$1,800", slots:[["Thu",M(15,45),M(16,45)]],
+    desc:"Code-based AI program — communicate with AI clearly, strategically &amp; responsibly. Design better prompts, evaluate/debug outputs, understand role, context, constraints, tone &amp; AI limitations. Teacher: Xtatic."},
+  {name:"Science Olympiad", cost:"$2,500 +vol", fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]],
+    desc:"STEM competition club — 23 events across biology, physics, earth science, engineering &amp; tech. Compete at invitationals, regionals &amp; state.", prereq:"7th &amp; 8th grade only. Signed Student Agreement + Parent Volunteering ($350 fee if unable to volunteer)."},
+  {name:"Speech & Debate", cost:"$1,500 +vol", fly:1, group:"mwslot", slots:[["Mon",M(16,0),M(18,0)],["Wed",M(16,0),M(17,0)]],
+    desc:"Speech categories (Prose, Poetry, Dramatic/Humorous/Duo Interp) &amp; Debate (Lincoln-Douglas, Policy, Public Forum, Congressional) per NFL rules. Virtual &amp; in-person weekend tournaments.", prereq:"Tryout (deadline Aug 1, 6 PM) + Parent Volunteering. Parents required to judge at tournaments ($350 fee if unable)."},
+  {name:"VEX Robotics (Team 1&2)", cost:"$1,300 +vol", fly:1, group:"vex", slots:[["Tue",M(16,0),M(18,0)]],
+    desc:"Intro to Competitive Robotics with VEX IQ (Teams 1 &amp; 2, Trimester 1 &amp; 2). Learn robotics foundations, design your own, compete against other teams. Teacher: Mr. Chu.", prereq:"7th &amp; 8th grade only. Parent Volunteering required ($350 fee if unable). 5 members per team."},
+  {name:"VEX Robotics (Team 3&4)", cost:"$1,300 +vol", fly:1, group:"vex", slots:[["Thu",M(15,45),M(17,45)]],
+    desc:"Intro to Competitive Robotics with VEX IQ (Teams 3 &amp; 4, Trimester 1 &amp; 2). Learn robotics foundations, design your own, compete against other teams. Teacher: Mr. Chu.", prereq:"7th &amp; 8th grade only. Parent Volunteering required ($350 fee if unable). 5 members per team."},
+  {name:"YouTube Celebrity", cost:"$1,800", slots:[["Tue",M(16,0),M(17,0)]],
+    desc:"Launch your journey as a YouTube influencer — monetization policies, ad mechanics, growing &amp; retaining viewers, content creation A-to-Z, pro editing, trends &amp; analytics. Teacher: Xtatic."},
+];
+CLUBS.forEach((c,i)=>c.id=i);
+
+function fmt(min){
+  let h=Math.floor(min/60), m=min%60;
+  const ap=h>=12?"PM":"AM"; let hh=h%12; if(hh===0)hh=12;
+  return hh+":"+String(m).padStart(2,"0")+" "+ap;
 }
+function baseCost(c){const m=c.cost.match(/\$([\d,]+)/);return m?parseInt(m[1].replace(/,/g,'')):0;}
 function overlaps(a,b){
-  for(const [d1,s1,e1] of a.slots)
-    for(const [d2,s2,e2] of b.slots)
-      if(d1===d2 && s1<e2 && s2<e1) return true;
+  for(const[d1,s1,e1]of a.slots)for(const[d2,s2,e2]of b.slots)
+    if(d1===d2&&s1<e2&&s2<e1)return true;
   return false;
 }
 
-const selected = new Set();
+// build day columns
+const cal=document.getElementById('cal');
+const stacks={};
+DAYS.forEach(d=>{
+  const col=document.createElement('div');col.className='col';
+  const hdr=document.createElement('div');hdr.className='colhdr';hdr.textContent=DAYNAME[d];
+  const stack=document.createElement('div');stack.className='stack';stack.dataset.day=d;
+  col.appendChild(hdr);col.appendChild(stack);cal.appendChild(col);
+  stacks[d]=stack;
+});
 
-// build DOM
-CLUBS.forEach((c,i)=>{
-  c.id=i;
-  const targets = c.cells || [c.cell];
-  targets.forEach((cellId,idx)=>{
-    const isCont = idx>0; // secondary placement shows a "(cont.)" hint
+// place one card per (club, slot) into the right day column, sorted by start time
+DAYS.forEach(d=>{
+  const items=[];
+  CLUBS.forEach(c=>{
+    c.slots.forEach((s,idx)=>{
+      if(s[0]===d) items.push({c,slot:s,isCont:idx>0});
+    });
+  });
+  items.sort((a,b)=> a.slot[1]-b.slot[1] || (b.slot[2]-b.slot[1])-(a.slot[2]-a.slot[1]));
+  items.forEach(({c,slot,isCont})=>{
+    const dur=slot[2]-slot[1];
     const el=document.createElement('div');
-    el.className = isCont ? 'evt cont' : 'evt';
-    el.dataset.id=i;
-    el.innerHTML=`<span class="why">busy</span><b>${c.name}${isCont?' <em style="font-style:normal;opacity:.7">(cont.)</em>':''}</b>
-      <small>${c.slots.map(s=>s[0]).join(' + ')}</small>
-      <small class="cost">${c.cost}</small>
-      ${c.fly ? '<span class="fly">✈ travels</span>' : ''}`;
-    el.onclick=()=>toggle(i);
-    document.getElementById(cellId).appendChild(el);
+    el.className='evt'+(isCont?' cont':'');
+    el.dataset.id=c.id;
+    el.style.minHeight=Math.max(60,Math.round(dur*PXMIN))+'px';
+    el.innerHTML=`<span class="why">busy</span>
+      <b>${c.name}${isCont?' <em>(2nd day)</em>':''}</b>
+      <span class="tm">${fmt(slot[1])} – ${fmt(slot[2])}</span>
+      <span class="cost">${c.cost}</span>
+      ${c.fly?'<span class="fly">✈ travels</span>':''}`;
+    el.onclick=()=>toggle(c.id);
+    el.addEventListener('mouseenter',e=>showTip(e,c));
+    el.addEventListener('mousemove',moveTip);
+    el.addEventListener('mouseleave',hideTip);
+    stacks[d].appendChild(el);
   });
 });
 
+// tooltip
+const tip=document.getElementById('tip');
+function showTip(e,c){
+  const times=c.slots.map(s=>`${DAYNAME[s[0]]} ${fmt(s[1])}–${fmt(s[2])}`).join(' · ');
+  tip.innerHTML=`<div class="t-name">${c.name}</div>
+    <div class="t-meta">${times} · ${c.cost}${c.fly?' · ✈ travels':''}</div>
+    <div>${c.desc||''}</div>
+    ${c.prereq?`<div class="t-pre"><b>Prerequisites:</b> ${c.prereq}</div>`:''}`;
+  tip.classList.add('show');
+  moveTip(e);
+}
+function moveTip(e){
+  const pad=14, w=tip.offsetWidth, h=tip.offsetHeight;
+  let x=e.clientX+pad, y=e.clientY+pad;
+  if(x+w>window.innerWidth-8) x=e.clientX-w-pad;
+  if(y+h>window.innerHeight-8) y=e.clientY-h-pad;
+  tip.style.left=Math.max(8,x)+'px';
+  tip.style.top=Math.max(8,y)+'px';
+}
+function hideTip(){tip.classList.remove('show');}
+
+const selected=new Set();
 function toggle(i){
   const el=document.querySelector(`.evt[data-id="${i}"]`);
-  if(el.classList.contains('disabled')) return; // can't pick a conflicting one
-  if(selected.has(i)) selected.delete(i); else selected.add(i);
+  if(el.classList.contains('disabled'))return;
+  if(selected.has(i))selected.delete(i);else selected.add(i);
   refresh();
 }
-function clearAll(){ selected.clear(); refresh(); }
-
+function clearAll(){selected.clear();refresh();}
 function refresh(){
-  // determine disabled = overlaps any selected, OR shares a mutual-exclusion group with a selected club (and not itself selected)
   CLUBS.forEach((c,i)=>{
     const els=document.querySelectorAll(`.evt[data-id="${i}"]`);
     let state='';
-    if(selected.has(i)){ state='selected'; }
-    else {
-      for(const s of selected){
-        if(overlaps(c,CLUBS[s]) || (c.group && c.group===CLUBS[s].group)){ state='disabled'; break; }
-      }
+    if(selected.has(i))state='selected';
+    else for(const s of selected){
+      if(overlaps(c,CLUBS[s])||(c.group&&c.group===CLUBS[s].group)){state='disabled';break;}
     }
-    els.forEach(el=>{ el.classList.remove('selected','disabled'); if(state) el.classList.add(state); });
+    els.forEach(el=>{el.classList.remove('selected','disabled');if(state)el.classList.add(state);});
   });
-  // total + summary
-  let total=0; const names=[];
-  selected.forEach(i=>{ total+=baseCost(CLUBS[i]); names.push(CLUBS[i].name); });
+  let total=0;const names=[];
+  selected.forEach(i=>{total+=baseCost(CLUBS[i]);names.push(CLUBS[i].name);});
   document.getElementById('total').textContent='$'+total.toLocaleString();
-  document.getElementById('picks').textContent = names.length
-    ? 'Selected: '+names.join(' · ')
-    : 'No clubs selected yet — tap any club to start.';
+  document.getElementById('picks').textContent=names.length?'Selected: '+names.join(' · '):'No clubs selected yet — tap any club to start.';
 }
 refresh();
 </script>
